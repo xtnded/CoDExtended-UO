@@ -6,7 +6,13 @@ cvar_t* x_jump_height;
 int StuckInClient(int a1) {
     *(float*)(GAME("PM_GetEffectiveStance") + 0x11AF) = x_jump_height->value;
 
+    // *(byte*)(GAME("PM_GetEffectiveStance") + 0x1172) = 0xeb;
+
     return 0;
+}
+
+double JumpSlowdownCrap() {
+    return 1.0;
 }
 
 int unprotect_lib(char *libname) {
@@ -65,6 +71,9 @@ void *Sys_LoadDll(char *name, char *dest, int (**entryPoint)(int, ...), int (*sy
     ScriptInit();
     
     __jmp(GAME("StuckInClient"), (int)StuckInClient);
+
+    __jmp(GAME("PM_GetEffectiveStance") + 0xAD, (int)JumpSlowdownCrap);
+    __jmp(GAME("PM_GetEffectiveStance") + 0x4C, (int)JumpSlowdownCrap);
     
     return ret;
 }
