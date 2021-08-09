@@ -82,7 +82,7 @@ void G_Say(gentity_t *ent, gentity_t *target, int mode, const char *msg) {
 }
 */
 
-void svClientInit() {
+void SVClientInit() {
     *(int*)0x80F4FA4 = (int)SV_BeginDownload; // 1.5 0x80EE704
     Cmd_AddCommand("dumpucmd", SV_DumpUcmd);
 

@@ -1,12 +1,11 @@
 #include "codextended.hpp"
 #include <math.h>
 
-cvar_t* player_jumpheight;
+cvar_t* x_jump_height;
 
-int StuckInPlayer(int a1) {
-    int tmp = (int)dlsym(gamelib, "PM_GetEffectiveStance");
-    
-    *(float*)(tmp+0x11AF) = player_jumpheight->value;
+int StuckInClient(int a1) {
+    *(float*)(GAME("PM_GetEffectiveStance") + 0x11AF) = x_jump_height->value;
+
     return 0;
 }
 
@@ -63,10 +62,9 @@ void *Sys_LoadDll(char *name, char *dest, int (**entryPoint)(int, ...), int (*sy
         game->entities[i].base = gentities + GENTITY_SIZE * i;
         game->entities[i].ptr = gentities + GENTITY_SIZE * i;
     }
-    scriptInitializing();
+    ScriptInit();
     
-    // int stuck = (int)dlsym(ret, "StuckInClient");
-    // __jmp(stuck, (int)StuckInPlayer);
+    __jmp(GAME("StuckInClient"), (int)StuckInClient);
     
     return ret;
 }
@@ -88,10 +86,10 @@ CODEXTENDED::CODEXTENDED() {
     *(byte*)0x808DACE = 0xeb;
 
     Cvar_Set("sv_hostname", "^7CoDHost");
-    // player_jumpheight = Cvar_Get("player_jumpheight", "39", 0);
+    x_jump_height = Cvar_Get("x_jump_height", "39", 0);
 
     SV_AddOperatorCommands();
-    svClientInit();
+    SVClientInit();
 }
 
 ENTITY* CODEXTENDED::getEntities() {

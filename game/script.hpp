@@ -113,7 +113,7 @@ extern Scr_ExecEntThread_t Scr_ExecEntThread;
 extern Scr_FreeThread_t Scr_FreeThread;
 extern SL_ConvertToString_t SL_ConvertToString;
 
-void scriptInitializing();
+void ScriptInit();
 
 // FUNCTIONS
 

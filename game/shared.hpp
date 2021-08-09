@@ -626,7 +626,7 @@ extern char (*zpml)[140];
 extern int zpm;
 
 void SV_AddOperatorCommands(void);
-void svClientInit();
+void SVClientInit();
 
 static int GAME(const char* n) {
     return (int)dlsym(gamelib, n);

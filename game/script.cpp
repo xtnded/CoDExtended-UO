@@ -185,7 +185,7 @@ void GScr_fclose(int entityIndex) {
 }
 
 
-void scriptInitializing() {
+void ScriptInit() {
     Script_GetString = (Script_GetString_t)dlsym(gamelib, "Scr_GetString");
     Script_GetInt = (Script_GetInt_t)dlsym(gamelib, "Scr_GetInt");
     Script_GetFloat = (Script_GetFloat_t)dlsym(gamelib, "Scr_GetFloat");
