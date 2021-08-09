@@ -2,20 +2,9 @@
 #include <math.h>
 
 cvar_t* player_jumpheight;
-cvar_t* jump_slowdownenable;
-cvar_t* g_steep;
 
 int StuckInPlayer(int a1) {
 	int tmp = (int)dlsym(gamelib, "PM_GetEffectiveStance");
-	if(jump_slowdownenable->integer)
-		*(byte*)(tmp+0x106F) = 0x7f;
-	else
-		*(byte*)(tmp+0x106F) = 0xeb;
-	
-	if(g_steep->integer) {
-		*(byte*)(tmp+0x36D2) = 0x90;
-		*(byte*)(tmp+0x36D3) = 0x90;
-	}
 	
 	*(float*)(tmp+0x10AC) = player_jumpheight->value;
 	return 0;
@@ -59,9 +48,9 @@ void *Sys_LoadDll(char *name, char *dest, int (**entryPoint)(int, ...), int (*sy
 	char libn[512];
 	char* check = Cvar_VariableString("fs_game");
 	if(check[0] == '\0')
-		sprintf(libn, "main/game.mp.i386.so");
+		sprintf(libn, "uo/game.mp.uo.i386.so");
 	else
-		sprintf(libn, "%s/game.mp.i386.so", check);
+		sprintf(libn, "%s/game.mp.uo.i386.so", check);
 	unprotect_lib(libn);
 	
 	gamelib = ret;
@@ -86,16 +75,22 @@ CODEXTENDED::CODEXTENDED() {
 	setbuf(stdout, NULL);
 	mprotect((void *)0x08048000, 0x135000, PROT_READ | PROT_WRITE | PROT_EXEC);
 	printf("Compiled: " __DATE__ " " __TIME__ "\n");
+	printf("sizeof(client_t): %d\n", sizeof(client_t));
 	
 	__call(0x0809E8ED, (int)Script_GetCustomFunction); // 1.5 0x809D975
 	__call(0x0809EB29, (int)Script_GetCustomMethod); // 1.5 0x809DBB1
 	__call(0x0809BE20, (int)Sys_LoadDll); // 1.5 0x809AEA8
+
+	//hardcode crack server
+	__nop(0x808A46F, 6);
+
+	//patch unpure crap
+   	*(byte*)0x808DDA7 = 0xeb;
+    	*(byte*)0x808DACE = 0xeb;
 	SV_AddOperatorCommands();
 	
 	Cvar_Set("sv_hostname", "^7CoDHost");
-	player_jumpheight = Cvar_Get("player_jumpheight", "39", 0);
-	jump_slowdownenable = Cvar_Get("jump_slowdownenable", "1", 0);
-	g_steep = Cvar_Get("g_steep", "0", 0);
+	//player_jumpheight = Cvar_Get("player_jumpheight", "39", 0);
 
 	svClientInit();
 }
