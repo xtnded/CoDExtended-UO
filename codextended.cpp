@@ -6,7 +6,7 @@ cvar_t* player_jumpheight;
 int StuckInPlayer(int a1) {
     int tmp = (int)dlsym(gamelib, "PM_GetEffectiveStance");
     
-    *(float*)(tmp+0x10AC) = player_jumpheight->value;
+    *(float*)(tmp+0x11AF) = player_jumpheight->value;
     return 0;
 }
 
