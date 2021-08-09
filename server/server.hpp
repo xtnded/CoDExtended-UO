@@ -90,17 +90,16 @@ typedef struct client_s {
     byte inaccuratelastUserCmd[28];
     int lastClientCommand;
     char lastClientCommandString[MAX_STRING_CHARS];
-    int* gentity; //sharedEntity_t  *gentity;
+    int* gentity; // sharedEntity_t *gentity;
     char name[MAX_NAME_LENGTH];
     byte unknown1[270024];
     int ping;
     int rate;
-    int snapshotMsec;                   // requests a snapshot every snapshotMsec unless rate choked
+    int snapshotMsec; // requests a snapshot every snapshotMsec unless rate choked
     int pureAuthentic;
-    qboolean gotCP;  // TTimo - additional flag to distinguish between a bad pure checksum, and no cp command at all
+    netchan_t netchan;
     int unknown2;
-    int dropped;
-    byte remoteAddress[4];
+    char lazy_to_figure_out_so_fill_it_up[362318];
 } client_t;
 
 extern int* clients;
