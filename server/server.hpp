@@ -81,12 +81,12 @@ typedef struct {
 } netchan_t;
 
 typedef struct client_s {
-	clientState_t state;
-	int unknown4;
-	int unknown8;
-	char userinfo[MAX_INFO_STRING];
-	byte unknown1032[66064];
-	int challenge;
+    clientState_t state;
+    int unknown4;
+    int unknown8;
+    char userinfo[MAX_INFO_STRING];
+    byte unknown1032[66064];
+    int challenge;
     byte inaccuratelastUserCmd[28];
     int lastClientCommand;
     char lastClientCommandString[MAX_STRING_CHARS];
@@ -96,11 +96,10 @@ typedef struct client_s {
     int ping;
     int rate;
     int snapshotMsec;                   // requests a snapshot every snapshotMsec unless rate choked
-	int pureAuthentic;
-	qboolean gotCP;  // TTimo - additional flag to distinguish between a bad pure checksum, and no cp command at all
+    int pureAuthentic;
+	netchan_t netchan;
     int unknown2;
-    int dropped;
-    byte remoteAddress[4];
+    char lazy_to_figure_out_so_fill_it_up[362318];
 } client_t;
 
 extern int* clients;
