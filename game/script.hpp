@@ -8,33 +8,33 @@
 #include <math.h>
 
 typedef enum {
-	OT_UNDEFINED, //0
-	OT_STRING, //1
-	OT_LOCALIZED_STRING, //2
-	OT_VECTOR, //3
-	OT_FLOAT, //4
-	OT_INT, //5
-	OT_CODEPOS, //6
-	OT_OBJECT, //7
-	OT_KEY_VALUE, //8
-	OT_FUNCTION, //9
-	OT_STACK, //10
-	OT_ANIMATION, //11
-	OT_THREAD, //12
-	OT_ENTITY, //13
-	OT_STRUCT, //14
-	OT_ARRAY, //16
-	OT_DEAD_THREAD, //15
-	OT_DEAD_ENTITY, //17
-	OT_DEAD_OBJECT //18
+    OT_UNDEFINED, //0
+    OT_STRING, //1
+    OT_LOCALIZED_STRING, //2
+    OT_VECTOR, //3
+    OT_FLOAT, //4
+    OT_INT, //5
+    OT_CODEPOS, //6
+    OT_OBJECT, //7
+    OT_KEY_VALUE, //8
+    OT_FUNCTION, //9
+    OT_STACK, //10
+    OT_ANIMATION, //11
+    OT_THREAD, //12
+    OT_ENTITY, //13
+    OT_STRUCT, //14
+    OT_ARRAY, //16
+    OT_DEAD_THREAD, //15
+    OT_DEAD_ENTITY, //17
+    OT_DEAD_OBJECT //18
 } objectType;
 
 typedef void (__cdecl *SCRIPTFUNCTIONCALL)(int);
 
 typedef struct {
-	const char* name;
-	SCRIPTFUNCTIONCALL call;
-	int developer;
+    const char* name;
+    SCRIPTFUNCTIONCALL call;
+    int developer;
 } SCRIPTFUNCTION;
 
 typedef SCRIPTFUNCTIONCALL (*Script_GetFunction_t)(const char**, int*);
@@ -115,35 +115,22 @@ extern SL_ConvertToString_t SL_ConvertToString;
 
 void scriptInitializing();
 
-/*
-=============
-FUNCTIONS
-=============
-*/
+// FUNCTIONS
 
 void GScr_printconsole(int);
 
-
-/*
-=============
-MATH
-=============
-*/
+// MATH
 
 void MScr_cos(int);
 void MScr_sin(int);
 
-/*
-=============
-PLAYER METHODS
-=============
-*/
+// PLAYER METHODS
 
-void PlayerCmd_useButtonPressedX(int);
 void PlayerCmd_setVelocity(int);
 void PlayerCmd_getVelocity(int);
 void PlayerCmd_getPlayerAngles(int);
 void PlayerCmd_getIP(int);
+void PlayerCmd_useButtonPressedX(int);
 void PlayerCmd_backButtonPressed(int);
 void PlayerCmd_forwardButtonPressed(int);
 void PlayerCmd_leftButtonPressed(int);
@@ -153,22 +140,14 @@ void PlayerCmd_movedownButtonPressed(int);
 void PlayerCmd_aimButtonPressed(int);
 void PlayerCmd_reloadButtonPressed(int);
 
-/*
-=============
-ENTITY METHODS
-=============
-*/
+// ENTITY METHODS
 
 void EntCmd_setBounds(int);
 void EntCmd_setTakeDamage(int);
 void EntCmd_callback(int);
 void EntCmd_nextthink(int);
 
-/*
-=============
-FILE FUNCTIONS
-=============
-*/
+// FILE FUNCTIONS
 
 void GScr_fopen(int);
 void GScr_fclose(int);
@@ -177,11 +156,7 @@ void GScr_fexists(int);
 void GScr_fsize(int);
 void GScr_fwrite(int);
 
-/*
-=============
-MYSQL FUNCTIONS
-=============
-*/
+// MYSQL FUNCTIONS
 
 #ifdef uMYSQL
 
@@ -190,7 +165,7 @@ void GScr_mysql_close(int);
 void GScr_mysql_affected_rows(int);
 void GScr_mysql_errno(int);
 void GScr_mysql_error(int);
-void GScr_mysql_fetch_field(int);
+void GScr__fetch_field(int);
 void GScr_mysql_field_seek(int);
 void GScr_mysql_free_result(int);
 void GScr_mysql_num_fields(int);

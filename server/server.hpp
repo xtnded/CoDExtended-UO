@@ -8,11 +8,11 @@
 #define svsclients_size 700596
 
 typedef enum {
-	CS_FREE,        // can be reused for a new connection
-	CS_ZOMBIE,      // client has been disconnected, but don't reuse connection for a couple seconds
-	CS_CONNECTED,   // has been assigned to a client_t, but no gamestate yet
-	CS_PRIMED,      // gamestate has been sent, but client hasn't sent a usercmd
-	CS_ACTIVE       // client is fully in game
+    CS_FREE,        // can be reused for a new connection
+    CS_ZOMBIE,      // client has been disconnected, but don't reuse connection for a couple seconds
+    CS_CONNECTED,   // has been assigned to a client_t, but no gamestate yet
+    CS_PRIMED,      // gamestate has been sent, but client hasn't sent a usercmd
+    CS_ACTIVE       // client is fully in game
 } clientState_t;
 
 typedef enum {
@@ -24,11 +24,11 @@ typedef enum {
 } usercmd_offset;
 
 typedef struct usercmd_s {
-	int serverTime;
-	byte buttons;
-	byte wbuttons;
-	byte weapon;
-	byte flags;
+    int serverTime;
+    byte buttons;
+    byte wbuttons;
+    byte weapon;
+    byte flags;
     byte unknown1[13];
     /*
         forward = 127
@@ -38,55 +38,55 @@ typedef struct usercmd_s {
         up = 127
         prone = 129
     */
-	signed char forwardmove, rightmove, upmove;
-	byte doubleTap;             // Arnout: only 3 bits used
+    signed char forwardmove, rightmove, upmove;
+    byte doubleTap;             // Arnout: only 3 bits used
 
-	// rain - in ET, this can be any entity, and it's used as an array
-	// index, so make sure it's unsigned
-	byte identClient;           // NERVE - SMF
+    // rain - in ET, this can be any entity, and it's used as an array
+    // index, so make sure it's unsigned
+    byte identClient;           // NERVE - SMF
 } usercmd_t;
 
 typedef enum {
-	NA_BOT,
-	NA_BAD,                 // an address lookup failed
-	NA_LOOPBACK,
-	NA_BROADCAST,
-	NA_IP,
-	NA_IPX,
-	NA_BROADCAST_IPX
+    NA_BOT,
+    NA_BAD,                 // an address lookup failed
+    NA_LOOPBACK,
+    NA_BROADCAST,
+    NA_IP,
+    NA_IPX,
+    NA_BROADCAST_IPX
 } netadrtype_t;
 
 typedef enum {
-	NS_CLIENT,
-	NS_SERVER
+    NS_CLIENT,
+    NS_SERVER
 } netsrc_t;
 
 typedef struct {
-	netadrtype_t type;
-	union {
-		byte ip[4];
-		unsigned int _ip;
-	};
-	byte ipx[10];
+    netadrtype_t type;
+    union {
+        byte ip[4];
+        unsigned int _ip;
+    };
+    byte ipx[10];
 
-	unsigned short port;
+    unsigned short port;
 } netadr_t; //size = 0x14 (20)
 
 typedef struct {
-	netsrc_t sock;
-	int dropped;
-	netadr_t remoteAddress;
-	int qport;
-	/* lot more bs here */
+    netsrc_t sock;
+    int dropped;
+    netadr_t remoteAddress;
+    int qport;
+    /* lot more bs here */
 } netchan_t;
 
 typedef struct client_s {
-	clientState_t state;
-	int unknown4;
-	int unknown8;
-	char userinfo[MAX_INFO_STRING];
-	byte unknown1032[66064];
-	int challenge;
+    clientState_t state;
+    int unknown4;
+    int unknown8;
+    char userinfo[MAX_INFO_STRING];
+    byte unknown1032[66064];
+    int challenge;
     byte inaccuratelastUserCmd[28];
     int lastClientCommand;
     char lastClientCommandString[MAX_STRING_CHARS];
@@ -96,8 +96,8 @@ typedef struct client_s {
     int ping;
     int rate;
     int snapshotMsec;                   // requests a snapshot every snapshotMsec unless rate choked
-	int pureAuthentic;
-	qboolean gotCP;  // TTimo - additional flag to distinguish between a bad pure checksum, and no cp command at all
+    int pureAuthentic;
+    qboolean gotCP;  // TTimo - additional flag to distinguish between a bad pure checksum, and no cp command at all
     int unknown2;
     int dropped;
     byte remoteAddress[4];

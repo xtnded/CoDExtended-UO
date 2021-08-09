@@ -1,13 +1,7 @@
 #include "script.hpp"
-/*
-	:: Scr_GetFunction/GetMethod ::
-	
-	CoD2 search for "parameter count exceeds 256" and go upwards
-	CoD1 search for "parameter count exceeds 256" or "unknown (builtin) function '%s'" and go upwards
-*/
 
 SCRIPTFUNCTION scriptFunctions[] = {
-	// name, function, developer
+    // name, function, developer
     {"printconsole", GScr_printconsole, 0},
     {"fopen", GScr_fopen, 0},
     {"fread", GScr_fread, 0},
@@ -19,28 +13,28 @@ SCRIPTFUNCTION scriptFunctions[] = {
 };
 
 SCRIPTFUNCTION scriptMethods[] = {
-	// name, function, developer
-	
+    // name, function, developer
+    
     // ENTITY
-	{"setbounds", EntCmd_setBounds, 0},/*
-	{"settakedamage", EntCmd_setTakeDamage, 0},
-	{"callback", EntCmd_callback, 0},
-	{"nextthink", EntCmd_nextthink, 0},*/
-	
+    {"setbounds", EntCmd_setBounds, 0},/*
+    {"settakedamage", EntCmd_setTakeDamage, 0},
+    {"callback", EntCmd_callback, 0},
+    {"nextthink", EntCmd_nextthink, 0},*/
+    
     // PLAYER
+    {"setvelocity", PlayerCmd_setVelocity, 0},
+    {"getvelocity", PlayerCmd_getVelocity, 0},
+    {"getplayerangles", PlayerCmd_getPlayerAngles, 0},
+    {"getip", PlayerCmd_getIP, 0},
     {"usebuttonpressedx", PlayerCmd_useButtonPressedX, 0},
-	{"setvelocity", PlayerCmd_setVelocity, 0},
-	{"getvelocity", PlayerCmd_getVelocity, 0},
-	{"getplayerangles", PlayerCmd_getPlayerAngles, 0},
-	{"getip", PlayerCmd_getIP, 0},
-	{"backbuttonpressed", PlayerCmd_backButtonPressed, 0},
-	{"forwardbuttonpressed", PlayerCmd_forwardButtonPressed, 0},
-	{"leftbuttonpressed", PlayerCmd_leftButtonPressed, 0},
-	{"rightbuttonpressed", PlayerCmd_rightButtonPressed, 0},
-	{"moveupbuttonpressed", PlayerCmd_moveupButtonPressed, 0},
-	{"movedownbuttonpressed", PlayerCmd_movedownButtonPressed, 0},
-	{"aimbuttonpressed", PlayerCmd_aimButtonPressed, 0},
-	{"reloadbuttonpressed", PlayerCmd_reloadButtonPressed, 0}
+    {"backbuttonpressed", PlayerCmd_backButtonPressed, 0},
+    {"forwardbuttonpressed", PlayerCmd_forwardButtonPressed, 0},
+    {"leftbuttonpressed", PlayerCmd_leftButtonPressed, 0},
+    {"rightbuttonpressed", PlayerCmd_rightButtonPressed, 0},
+    {"moveupbuttonpressed", PlayerCmd_moveupButtonPressed, 0},
+    {"movedownbuttonpressed", PlayerCmd_movedownButtonPressed, 0},
+    {"aimbuttonpressed", PlayerCmd_aimButtonPressed, 0},
+    {"reloadbuttonpressed", PlayerCmd_reloadButtonPressed, 0}
 };
 
 Script_GetFunction_t Script_GetFunction = (Script_GetFunction_t)0x80A1AAC; // 1.5 0x80A0B34
@@ -82,7 +76,7 @@ SCRIPTFUNCTIONCALL Script_GetCustomFunction(const char** fname, int* fdev) {
             }
         }
     }
-	return fc;
+    return fc;
 }
 
 SCRIPTFUNCTIONCALL Script_GetCustomMethod(const char** fname, int* fdev) {
@@ -99,52 +93,26 @@ SCRIPTFUNCTIONCALL Script_GetCustomMethod(const char** fname, int* fdev) {
             }
         }
     }
-	return fc;
+    return fc;
 }
 
 // FUNCTIONS
 
 void GScr_printconsole(int entityIndex) { // If this was a method the index would be the entity's number
-	const char* txt = Script_GetString(0);
-	printf(txt);
+    const char* txt = Script_GetString(0);
+    printf(txt);
 }
 
 // MATH
 
 void MScr_cos(int entityIndex) {
-	float f = Script_GetFloat(0);
-	Script_AddFloat(cos(f));
+    float f = Script_GetFloat(0);
+    Script_AddFloat(cos(f));
 }
 
 void MScr_sin(int entityIndex) {
-	float f = Script_GetFloat(0);
-	Script_AddFloat(sin(f));
-}
-
-// PLAYER METHODS
-
-void PlayerCmd_useButtonPressedX(int entityIndex) {
-	if(entityIndex > 1023) {
-		Script_Error(va("%i is not a valid entity number", entityIndex));
-		return;
-	}
-	
-	ENTITY* ent = game->getEntity(entityIndex);
-	if(ent) {
-		if(!ent->isPlayer()) {
-			Script_Error(va("entity %i is not a player", entityIndex));
-			return;
-		}
-		ent->toPlayerState();
-		int press;
-		ent->get(8688, &press, sizeof(press));
-		if(press & 0x40)
-			Script_AddInt(1);
-		else
-			Script_AddInt(0);
-		ent->toEntityState();
-	}
-	
+    float f = Script_GetFloat(0);
+    Script_AddFloat(sin(f));
 }
 
 // FILE FUNCTIONS
@@ -218,25 +186,25 @@ void GScr_fclose(int entityIndex) {
 
 
 void scriptInitializing() {
-	Script_GetString = (Script_GetString_t)dlsym(gamelib, "Scr_GetString");
-	Script_GetInt = (Script_GetInt_t)dlsym(gamelib, "Scr_GetInt");
-	Script_GetFloat = (Script_GetFloat_t)dlsym(gamelib, "Scr_GetFloat");
-	Script_GetVector = (Script_GetVector_t)dlsym(gamelib, "Scr_GetVector");
-	Script_GetNumParam = (Script_GetNumParam_t)dlsym(gamelib, "Scr_GetNumParam");
-	Script_GetBool = (Script_GetBool_t)dlsym(gamelib, "Scr_GetBool");
-	Script_GetFunc = (Script_GetFunc_t)dlsym(gamelib, "Scr_GetFunc");
-	Script_GetType = (Script_GetType_t)dlsym(gamelib, "Scr_GetType");
-	Script_GetPointerType = (Script_GetPointerType_t)dlsym(gamelib, "Scr_GetPointerType");
-	
-	Script_AddInt = (Script_AddInt_t)dlsym(gamelib, "Scr_AddInt");
-	Script_AddFloat = (Script_AddFloat_t)dlsym(gamelib, "Scr_AddFloat");
-	Script_AddVector = (Script_AddVector_t)dlsym(gamelib, "Scr_AddVector");
-	Script_AddString = (Script_AddString_t)dlsym(gamelib, "Scr_AddString");
-	Script_AddEntity = (Script_AddEntity_t)dlsym(gamelib, "Scr_AddEntity");
-	Script_AddUndefined = (Script_AddUndefined_t)dlsym(gamelib, "Scr_AddUndefined");
-	Script_AddBool = (Script_AddBool_t)dlsym(gamelib, "Scr_AddBool");
-	
-	Script_MakeArray = (Script_MakeArray_t)dlsym(gamelib, "Scr_MakeArray");
-	Script_AddArray = (Script_AddArray_t)dlsym(gamelib, "Scr_AddArray");
-	Script_Error = (Script_Error_t)dlsym(gamelib, "Scr_Error");
+    Script_GetString = (Script_GetString_t)dlsym(gamelib, "Scr_GetString");
+    Script_GetInt = (Script_GetInt_t)dlsym(gamelib, "Scr_GetInt");
+    Script_GetFloat = (Script_GetFloat_t)dlsym(gamelib, "Scr_GetFloat");
+    Script_GetVector = (Script_GetVector_t)dlsym(gamelib, "Scr_GetVector");
+    Script_GetNumParam = (Script_GetNumParam_t)dlsym(gamelib, "Scr_GetNumParam");
+    Script_GetBool = (Script_GetBool_t)dlsym(gamelib, "Scr_GetBool");
+    Script_GetFunc = (Script_GetFunc_t)dlsym(gamelib, "Scr_GetFunc");
+    Script_GetType = (Script_GetType_t)dlsym(gamelib, "Scr_GetType");
+    Script_GetPointerType = (Script_GetPointerType_t)dlsym(gamelib, "Scr_GetPointerType");
+    
+    Script_AddInt = (Script_AddInt_t)dlsym(gamelib, "Scr_AddInt");
+    Script_AddFloat = (Script_AddFloat_t)dlsym(gamelib, "Scr_AddFloat");
+    Script_AddVector = (Script_AddVector_t)dlsym(gamelib, "Scr_AddVector");
+    Script_AddString = (Script_AddString_t)dlsym(gamelib, "Scr_AddString");
+    Script_AddEntity = (Script_AddEntity_t)dlsym(gamelib, "Scr_AddEntity");
+    Script_AddUndefined = (Script_AddUndefined_t)dlsym(gamelib, "Scr_AddUndefined");
+    Script_AddBool = (Script_AddBool_t)dlsym(gamelib, "Scr_AddBool");
+    
+    Script_MakeArray = (Script_MakeArray_t)dlsym(gamelib, "Scr_MakeArray");
+    Script_AddArray = (Script_AddArray_t)dlsym(gamelib, "Scr_AddArray");
+    Script_Error = (Script_Error_t)dlsym(gamelib, "Scr_Error");
 }

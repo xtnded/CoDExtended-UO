@@ -24,6 +24,29 @@ void PlayerCmd_getVelocity(int entityIndex) {
     }
 }
 
+void PlayerCmd_useButtonPressedX(int entityIndex) {
+    if(entityIndex > 1023) {
+        Script_Error(va("%i is not a valid entity number", entityIndex));
+        return;
+    }
+    
+    ENTITY* ent = game->getEntity(entityIndex);
+    if(ent) {
+        if(!ent->isPlayer()) {
+            Script_Error(va("entity %i is not a player", entityIndex));
+            return;
+        }
+        ent->toPlayerState();
+        int press;
+        ent->get(8688, &press, sizeof(press));
+        if(press & 0x40)
+            Script_AddInt(1);
+        else
+            Script_AddInt(0);
+        ent->toEntityState();
+    }
+}
+
 void PlayerCmd_forwardButtonPressed(int a1) {
     ENTITY* ent = game->getEntity(a1);
     if(ent) {
@@ -148,8 +171,8 @@ void PlayerCmd_movedownButtonPressed(int a1) {
 
 client_t* getclient(int num) {
     client_t *cl = (client_t*)(*(int*)clients+num*svsclients_size);
-	//return &clients[num];
-	return cl;
+    //return &clients[num];
+    return cl;
 }
 
 void PlayerCmd_getIP(int a1) {

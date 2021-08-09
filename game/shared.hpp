@@ -49,16 +49,16 @@ typedef vec_t vec3_t[3];
 typedef vec_t vec4_t[4];
 typedef vec_t vec5_t[5];
 
-typedef enum { qfalse, qtrue }	qboolean;
+typedef enum { qfalse, qtrue }    qboolean;
 
 typedef enum {
-	ERR_FATAL,                  // exit the entire game with a popup window
-	ERR_VID_FATAL,              // exit the entire game with a popup window and doesn't delete profile.pid
-	ERR_DROP,                   // print to console and disconnect from game
-	ERR_SERVERDISCONNECT,       // don't kill server
-	ERR_DISCONNECT,             // client disconnected from the server
-	ERR_NEED_CD,                // pop up the need-cd dialog
-	ERR_AUTOUPDATE
+    ERR_FATAL,                  // exit the entire game with a popup window
+    ERR_VID_FATAL,              // exit the entire game with a popup window and doesn't delete profile.pid
+    ERR_DROP,                   // print to console and disconnect from game
+    ERR_SERVERDISCONNECT,       // don't kill server
+    ERR_DISCONNECT,             // client disconnected from the server
+    ERR_NEED_CD,                // pop up the need-cd dialog
+    ERR_AUTOUPDATE
 } errorParm_t;
 
 /*
@@ -66,18 +66,18 @@ typedef enum {
 */
 
 #define CVAR_ARCHIVE        1   // set to cause it to be saved to vars.rc
-								// used for system variables, not for player
-								// specific configurations
+                                // used for system variables, not for player
+                                // specific configurations
 #define CVAR_USERINFO       2   // sent to server on connect or change
 #define CVAR_SERVERINFO     4   // sent in response to front end requests
 #define CVAR_SYSTEMINFO     8   // these cvars will be duplicated on all clients
 #define CVAR_INIT           16  // don't allow change from console at all,
-								// but can be set from the command line
+                                // but can be set from the command line
 #define CVAR_LATCH          32  // will only change when C code next does
-								// a Cvar_Get(), so it can't be changed
-								// without proper initialization.  modified
-								// will be set, even though the value hasn't
-								// changed yet
+                                // a Cvar_Get(), so it can't be changed
+                                // without proper initialization.  modified
+                                // will be set, even though the value hasn't
+                                // changed yet
 #define CVAR_ROM            64  // display only, cannot be set by user at all
 #define CVAR_USER_CREATED   128 // created by a set command
 #define CVAR_TEMP           256 // can be set even when cheats are disabled, but is not archived
@@ -90,17 +90,17 @@ typedef enum {
 
 // nothing outside the Cvar_*() functions should modify these fields!
 typedef struct cvar_s {
-	char        *name;
-	char        *string;
-	char        *resetString;       // cvar_restart will reset to this value
-	char        *latchedString;     // for CVAR_LATCH vars
-	int flags;
-	qboolean modified;              // set each time the cvar is changed
-	int modificationCount;          // incremented each time the cvar is changed
-	float value;                    // atof( string )
-	int integer;                    // atoi( string )
-	struct cvar_s *next;
-	struct cvar_s *hashNext;
+    char        *name;
+    char        *string;
+    char        *resetString;       // cvar_restart will reset to this value
+    char        *latchedString;     // for CVAR_LATCH vars
+    int flags;
+    qboolean modified;              // set each time the cvar is changed
+    int modificationCount;          // incremented each time the cvar is changed
+    float value;                    // atof( string )
+    int integer;                    // atoi( string )
+    struct cvar_s *next;
+    struct cvar_s *hashNext;
 } cvar_t;
 
 #define MAX_CVAR_VALUE_STRING   256
@@ -110,11 +110,11 @@ typedef int cvarHandle_t;
 // the modules that run in the virtual machine can't access the cvar_t directly,
 // so they must ask for structured updates
 typedef struct {
-	cvarHandle_t handle;
-	int modificationCount;
-	float value;
-	int integer;
-	char string[MAX_CVAR_VALUE_STRING];
+    cvarHandle_t handle;
+    int modificationCount;
+    float value;
+    int integer;
+    char string[MAX_CVAR_VALUE_STRING];
 } vmCvar_t;
 
 
@@ -152,24 +152,24 @@ typedef struct {
 #define MAX_BINARY_MESSAGE  32768   // max length of binary message
 
 typedef struct cplane_s {
-	vec3_t	normal;
-	float	dist;
-	byte	type;
-	byte	signbits;
-	byte	pad[2];
+    vec3_t    normal;
+    float    dist;
+    byte    type;
+    byte    signbits;
+    byte    pad[2];
 } cplane_t;
 
 typedef struct {
-	float		fraction;
-	vec3_t		endpos;
+    float        fraction;
+    vec3_t        endpos;
 
-	cplane_t	plane;
-	int			surfaceFlags;
-	int			contents;
+    cplane_t    plane;
+    int            surfaceFlags;
+    int            contents;
 
-	qboolean	allsolid;
-	qboolean	startsolid;
-	int			entityNum;
+    qboolean    allsolid;
+    qboolean    startsolid;
+    int            entityNum;
 
 } trace_t;
 
@@ -205,23 +205,23 @@ typedef struct {
 #define ENTITYNUM_MAX_NORMAL  (MAX_GENTITIES-2)
 
 typedef struct {
-	qboolean allowoverflow;     // if false, do a Com_Error
-	qboolean overflowed;        // set to true if the buffer size failed (with allowoverflow set)
-	qboolean oob;               // set to true if the buffer size failed (with allowoverflow set)
-	byte    *data;
-	int maxsize;
-	int cursize;
-	int uncompsize;             // NERVE - SMF - net debugging
-	int readcount;
-	int bit;                    // for bitwise reads and writes
+    qboolean allowoverflow;     // if false, do a Com_Error
+    qboolean overflowed;        // set to true if the buffer size failed (with allowoverflow set)
+    qboolean oob;               // set to true if the buffer size failed (with allowoverflow set)
+    byte    *data;
+    int maxsize;
+    int cursize;
+    int uncompsize;             // NERVE - SMF - net debugging
+    int readcount;
+    int bit;                    // for bitwise reads and writes
 } msg_t;
 
 
 typedef enum {
-	FS_READ,
-	FS_WRITE,
-	FS_APPEND,
-	FS_APPEND_SYNC
+    FS_READ,
+    FS_WRITE,
+    FS_APPEND,
+    FS_APPEND_SYNC
 } fsMode_t;
 
 typedef enum {
@@ -237,32 +237,32 @@ typedef enum {
 } entityType_t;
 
 typedef enum {
-	TR_STATIONARY,
-	TR_INTERPOLATE,             // non-parametric, but interpolate between snapshots
-	TR_LINEAR,
-	TR_LINEAR_STOP,
-	TR_LINEAR_STOP_BACK,        //----(SA)	added.  so reverse movement can be different than forward
-	TR_SINE,                    // value = base + sin( time / duration ) * delta
-	TR_GRAVITY,
-	// Ridah
-	TR_GRAVITY_LOW,
-	TR_GRAVITY_FLOAT,           // super low grav with no gravity acceleration (floating feathers/fabric/leaves/...)
-	TR_GRAVITY_PAUSED,          //----(SA)	has stopped, but will still do a short trace to see if it should be switched back to TR_GRAVITY
-	TR_ACCELERATE,
-	TR_DECCELERATE,
-	// Gordon
-	TR_SPLINE,
-	TR_LINEAR_PATH
+    TR_STATIONARY,
+    TR_INTERPOLATE,             // non-parametric, but interpolate between snapshots
+    TR_LINEAR,
+    TR_LINEAR_STOP,
+    TR_LINEAR_STOP_BACK,        //----(SA)    added.  so reverse movement can be different than forward
+    TR_SINE,                    // value = base + sin( time / duration ) * delta
+    TR_GRAVITY,
+    // Ridah
+    TR_GRAVITY_LOW,
+    TR_GRAVITY_FLOAT,           // super low grav with no gravity acceleration (floating feathers/fabric/leaves/...)
+    TR_GRAVITY_PAUSED,          //----(SA)    has stopped, but will still do a short trace to see if it should be switched back to TR_GRAVITY
+    TR_ACCELERATE,
+    TR_DECCELERATE,
+    // Gordon
+    TR_SPLINE,
+    TR_LINEAR_PATH
 } trType_t;
 
 typedef struct {
-	trType_t trType;
-	int trTime;
-	int trDuration;             // if non 0, trTime + trDuration = stop time
-//----(SA)	removed
-	vec3_t trBase;
-	vec3_t trDelta;             // velocity, etc
-//----(SA)	removed
+    trType_t trType;
+    int trTime;
+    int trDuration;             // if non 0, trTime + trDuration = stop time
+//----(SA)    removed
+    vec3_t trBase;
+    vec3_t trDelta;             // velocity, etc
+//----(SA)    removed
 } trajectory_t;
 
 typedef struct {
@@ -492,21 +492,21 @@ typedef enum {
     /*
     from
     typedef enum {
-	TRAP_MEMSET = 100,
-	TRAP_MEMCPY,
-	TRAP_STRNCPY,
-	TRAP_SIN,
-	TRAP_COS,
-	TRAP_ATAN2,
-	TRAP_SQRT,
-	TRAP_MATRIXMULTIPLY,
-	TRAP_ANGLEVECTORS,
-	TRAP_PERPENDICULARVECTOR,
-	TRAP_FLOOR,
-	TRAP_CEIL,
+    TRAP_MEMSET = 100,
+    TRAP_MEMCPY,
+    TRAP_STRNCPY,
+    TRAP_SIN,
+    TRAP_COS,
+    TRAP_ATAN2,
+    TRAP_SQRT,
+    TRAP_MATRIXMULTIPLY,
+    TRAP_ANGLEVECTORS,
+    TRAP_PERPENDICULARVECTOR,
+    TRAP_FLOOR,
+    TRAP_CEIL,
 
-	TRAP_TESTPRINTINT,
-	TRAP_TESTPRINTFLOAT
+    TRAP_TESTPRINTINT,
+    TRAP_TESTPRINTFLOAT
     } sharedTraps_t;
     */
 } gameImport_t;
@@ -629,7 +629,7 @@ void SV_AddOperatorCommands(void);
 void svClientInit();
 
 static int GAME(const char* n) {
-	return (int)dlsym(gamelib, n);
+    return (int)dlsym(gamelib, n);
 }
 
 #endif // SHARED_H
